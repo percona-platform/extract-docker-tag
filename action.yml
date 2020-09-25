@@ -1,6 +1,6 @@
 ---
-name: "Get Stale Packages"
-description: "Collect stale package versions"
+name: "Extract Docker Tag"
+description: "Extracts docker image tag"
 runs:
   using: "node12"
   main: "index.js"
