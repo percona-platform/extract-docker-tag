@@ -1,0 +1,6 @@
+---
+name: "Extract Docker Tag"
+description: "Extracts docker image tag"
+runs:
+  using: "node12"
+  main: "index.js"
