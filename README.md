@@ -8,5 +8,5 @@ You can use this action inside your ci workflow by adding the following steps to
 
 ```
 - name: Extract Docker image tag
-  uses: percona-platform/extract-docker-tag-action@v1.0.0
+  uses: percona-platform/extract-docker-tag-action@v1
 ```
