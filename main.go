@@ -55,13 +55,7 @@ func main() {
 	}
 
 	log.Printf("Using DOCKER_TAG=%s", tag)
-	err = githubactions.IssueFileCommand(&githubactions.Command{
-		Name:    "set-env",
-		Message: fmt.Sprintf("name=DOCKER_TAG::%s\n", tag),
-	})
-	if err != nil {
-		log.Fatal(err.Error())
-	}
+	githubactions.SetEnv("DOCKER_TAG", tag)
 }
 
 func extractImageTag(env *env) (string, error) {
