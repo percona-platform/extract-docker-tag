@@ -74,6 +74,7 @@ jobs:
           go mod tidy
           git checkout go.sum
           git diff --exit-code
+
       - name: Run debug commands on failure
         if: ${{ failure() }}
         run: |
