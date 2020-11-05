@@ -7,6 +7,8 @@ import (
 	"os"
 	"regexp"
 	"strings"
+
+	"github.com/sethvargo/go-githubactions"
 )
 
 const (
@@ -49,11 +51,11 @@ func main() {
 
 	tag, err := extractImageTag(env)
 	if err != nil {
-		log.Fatal(err.Error())
+		githubactions.Fatalf("docker image tag extraction failed: %s", err)
 	}
 
 	log.Printf("Using DOCKER_TAG=%s", tag)
-	fmt.Printf("::set-env name=DOCKER_TAG::%s\n", tag)
+	githubactions.SetEnv("DOCKER_TAG", tag)
 }
 
 func extractImageTag(env *env) (string, error) {
