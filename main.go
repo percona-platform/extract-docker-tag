@@ -47,6 +47,10 @@ func main() {
 		githubRef:     os.Getenv("GITHUB_REF"),
 		githubHeadRef: os.Getenv("GITHUB_HEAD_REF"),
 	}
+	if ref := githubactions.GetInput("ref"); ref != "" {
+		env.githubRef = ref
+	}
+
 	log.Printf("%+v", env)
 
 	tag, err := extractImageTag(env)
