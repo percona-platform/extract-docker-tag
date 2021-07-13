@@ -63,11 +63,13 @@ func extractImageTag(env *env) (string, error) {
 
 	// Extract tag for workflows triggered by branches
 	if strings.HasPrefix(env.githubRef, gitBranchesRef) {
+		log.Printf("Exrtacting tag for branch")
 		ref = strings.Split(env.githubRef, gitBranchesRef)[1]
 	}
 
 	// Extract tag for workflows triggered by creation of a new release tag.
 	if strings.HasPrefix(env.githubRef, gitTagsRef) {
+		log.Printf("Exrtacting tag for release tag")
 		ref = strings.Split(env.githubRef, gitTagsRef)[1]
 
 		if ref[0] == 'v' && semVerRegex.MatchString(ref[1:]) {
@@ -78,6 +80,7 @@ func extractImageTag(env *env) (string, error) {
 	// Extract tag for workflows triggered by creation of a PR.
 	// GITHUB_HEAD_REF is only set for PRs.
 	if env.githubHeadRef != "" {
+		log.Printf("Exrtacting tag for PR")
 		ref = env.githubHeadRef
 	}
 
