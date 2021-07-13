@@ -1,10 +1,6 @@
 ---
 name: "Extract Docker Tag"
 description: "Extracts docker image tag"
-inputs:
-  ref:
-    description: >
-      The branch, tag or SHA to use for tag extraction.
 runs:
   using: "node12"
   main: "index.js"
