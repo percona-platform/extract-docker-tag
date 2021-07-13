@@ -12,9 +12,8 @@ import (
 )
 
 const (
-	gitBranchesRef     = "refs/heads/"
-	gitTagsRef         = "refs/tags/"
-	gitPullRequestsRef = "refs/pull/"
+	gitBranchesRef = "refs/heads/"
+	gitTagsRef     = "refs/tags/"
 
 	// https://semver.org/#is-there-a-suggested-regular-expression-regex-to-check-a-semver-string
 	semverRegExp = "^(?P<major>0|[1-9]\\d*)\\.(?P<minor>0|[1-9]\\d*)\\.(?P<patch>0|[1-9]\\d*)(?:-(?P<prerelease>" +
@@ -47,9 +46,6 @@ func main() {
 		githubRef:     os.Getenv("GITHUB_REF"),
 		githubHeadRef: os.Getenv("GITHUB_HEAD_REF"),
 	}
-	if ref := githubactions.GetInput("ref"); ref != "" {
-		env.githubRef = ref
-	}
 
 	log.Printf("%+v", env)
 
@@ -65,11 +61,15 @@ func main() {
 func extractImageTag(env *env) (string, error) {
 	var ref string
 
+	// Extract tag for workflows triggered by branches
 	if strings.HasPrefix(env.githubRef, gitBranchesRef) {
+		log.Printf("Exrtacting tag for branch")
 		ref = strings.Split(env.githubRef, gitBranchesRef)[1]
 	}
 
+	// Extract tag for workflows triggered by creation of a new release tag.
 	if strings.HasPrefix(env.githubRef, gitTagsRef) {
+		log.Printf("Exrtacting tag for release tag")
 		ref = strings.Split(env.githubRef, gitTagsRef)[1]
 
 		if ref[0] == 'v' && semVerRegex.MatchString(ref[1:]) {
@@ -77,7 +77,10 @@ func extractImageTag(env *env) (string, error) {
 		}
 	}
 
-	if strings.HasPrefix(env.githubRef, gitPullRequestsRef) {
+	// Extract tag for workflows triggered by creation of a PR.
+	// GITHUB_HEAD_REF is only set for PRs.
+	if env.githubHeadRef != "" {
+		log.Printf("Exrtacting tag for PR")
 		ref = env.githubHeadRef
 	}
 
